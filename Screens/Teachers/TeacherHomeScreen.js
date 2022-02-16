@@ -123,7 +123,7 @@ const TeacherHomeScreen = (props) => {
   const signOutUser = async () => {
     try {
       await firebase.auth().signOut();
-      props.navigation.navigate("Start");
+      props.navigation.replace("Start");
     } catch (e) {
       console.log(e);
     }
@@ -138,28 +138,11 @@ const TeacherHomeScreen = (props) => {
   // console.log(auth.currentUser);
 
   const setAttendanceDetails = (phone, attendance, name) => {
+    setDoc(doc(firestore, "Attendance", `${block}`, "0", name), {
+      name: name,
+    });
     setDoc(
-      doc(
-        firestore,
-        "Attendance",
-        `${block}`,
-        "0",
-        name,
-      ),
-      {
-        name: name,
-      }
-    );
-    setDoc(
-      doc(
-        firestore,
-        "Attendance",
-        `${block}`,
-        "0",
-        name,
-        "Date",
-        `${today}`
-      ),
+      doc(firestore, "Attendance", `${block}`, "0", name, "Date", `${today}`),
       {
         attendance: attendance,
       }

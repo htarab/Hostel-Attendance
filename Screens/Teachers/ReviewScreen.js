@@ -50,7 +50,7 @@ const exportExcel = async (excelData, fileName) => {
     bookType: "xlsx",
   });
   const uri = FileSystem.documentDirectory + "Attendance.xlsx";
-  console.log(`Writing to ${JSON.stringify(uri)} with text: ${wbout}`);
+  // console.log(`Writing to ${JSON.stringify(uri)} with text: ${wbout}`);
   await FileSystem.writeAsStringAsync(uri, wbout, {
     encoding: FileSystem.EncodingType.Base64,
   });
@@ -73,13 +73,9 @@ const ReviewScreen = (props) => {
   const [widthArr, setWidthArr] = useState(widthArrInitial);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const element = (data, index) => (
-    <TouchableOpacity onPress={() => console.log("Hello")}>
-      <View style={styles.btn}>
-        <Text style={styles.btnText}>button</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const filterData = (fromDate, toDate) => {
+    console.log(fromDate.toDateString() + " " + toDate.toDateString());
+  };
 
   const getStudents = async (block) => {
     const col = collection(db, `Attendance/${block}/0`);
@@ -154,7 +150,11 @@ const ReviewScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <FilterComponent modalVisible={modalVisible} closeModule={closeModule} />
+      <FilterComponent
+        modalVisible={modalVisible}
+        closeModule={closeModule}
+        filterData={filterData}
+      />
       <ScrollView horizontal>
         <View>
           <Table borderStyle={{ borderWidth: 2, borderColor: Colors.bg }}>
@@ -237,6 +237,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
+    width: "90%",
+    justifyContent: 'space-between',
+    marginBottom: 30,
   },
 });
 
